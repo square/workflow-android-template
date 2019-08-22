@@ -3,10 +3,7 @@
 Template project for new [Workflow](https://square.github.io/workflow)-based Android apps –
 just clone and start building!
 
-```bash
-git clone https://github.com/square/workflow-android-template.git your-app
-git remote set-url origin git@your-repo-url
-```
+[![Screenshot of Use this Template button](https://help.github.com/assets/images/help/repository/use-this-template-button.png)](https://help.github.com/en/articles/creating-a-repository-from-a-template)
 
 ## What is "Workflow"?
 
