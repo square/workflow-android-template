@@ -19,7 +19,7 @@ object HelloWorkflow : StatefulWorkflow<Unit, State, Nothing, Rendering>() {
 
     data class Rendering(
         val message: String,
-        val onClick: (Unit) -> Unit
+        val onClick: () -> Unit
     )
 
     private val helloAction = WorkflowAction<State, Nothing> {
