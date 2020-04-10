@@ -1,5 +1,6 @@
 package com.example.helloworkflow
 
+import com.example.helloworkflow.HelloWorkflow.Action.HelloAction
 import com.example.helloworkflow.HelloWorkflow.Rendering
 import com.example.helloworkflow.HelloWorkflow.State
 import com.example.helloworkflow.HelloWorkflow.State.Goodbye
@@ -22,9 +23,14 @@ object HelloWorkflow : StatefulWorkflow<Unit, State, Nothing, Rendering>() {
         val onClick: () -> Unit
     )
 
-    private val helloAction = WorkflowAction<State, Nothing> {
-        state = state.theOtherState()
-        null
+    private sealed class Action : WorkflowAction<State, Nothing> {
+        override fun WorkflowAction.Updater<State, Nothing>.apply() {
+            when (this@Action) {
+                is HelloAction -> nextState = this@Action.currentState.theOtherState()
+            }
+        }
+
+        data class HelloAction(val currentState: State) : Action()
     }
 
     override fun initialState(
@@ -38,10 +44,9 @@ object HelloWorkflow : StatefulWorkflow<Unit, State, Nothing, Rendering>() {
         state: State,
         context: RenderContext<State, Nothing>
     ): Rendering {
-        val sink = context.makeActionSink<WorkflowAction<State, Nothing>>()
         return Rendering(
             message = state.name,
-            onClick = { sink.send(helloAction) }
+            onClick = { context.actionSink.send(HelloAction(state)) }
         )
     }
 
